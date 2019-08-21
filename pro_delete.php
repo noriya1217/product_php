@@ -14,24 +14,22 @@
         $dbh = new PDO($dsn, $user, $password);
         $dbh -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = 'SELECT name, price, gazou FROM mst_product WHERE code=?';
+        $sql = 'SELECT name, gazou FROM mst_product WHERE code=?';
         $stmt = $dbh -> prepare($sql);
         $data[] = $pro_code;
         $stmt -> execute($data);
 
         $rec = $stmt -> fetch(PDO::FETCH_ASSOC);
         $pro_name = $rec['name'];
-        $pro_price = $rec['price'];
         $pro_gazou_name = $rec['gazou'];
 
         $dbh = null;
 
         if ($pro_gazou_name == '') {
-            $disp_gazou = '画像なし';
+            $disp_gazou = '';
         } else {
             $disp_gazou = '<img src="./gazou/'.$pro_gazou_name.'">';
         }
-
     }
     catch (Exception $e) {
         print 'ただいま障害により大変ご迷惑をお掛けしております。';
@@ -39,15 +37,18 @@
     }
     ?>
 
-    商品情報参照<br /><br />
+    商品削除<br /><br />
     商品コード<br />
-    <?php print $pro_code; ?><br /><br />
-    商品名：<?php print $pro_name; ?><br><br>
-    価格：<?php echo $pro_price; ?>円<br><br>
-    商品画像：<?php echo $disp_gazou; ?><br><br>
+    <?php print $pro_code; ?><br />
+    商品名：<?php echo $pro_name; ?><br>
+    商品画像：<?php echo $disp_gazou; ?><br>
+    この商品を削除してもよろしいですか？<br><br>
 
-    <form>
-        <input type='button' onclick="history.back()" value="戻る">
+    <form method="post" action="pro_delete_done.php">
+      <input type="hidden" name="code" value="<?php print $pro_code; ?>">
+      <input type='hidden' name='gazou_name' value='<?php echo $pro_gazou_name; ?>'>
+      <input type='button' onclick="history.back()" value="戻る">
+      <input type="submit" value="OK">
     </form>
 
   </body>
