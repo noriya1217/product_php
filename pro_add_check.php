@@ -18,12 +18,13 @@
   </head>
   <body>
     <?php
-    $pro_name = $_POST['name'];
-    $pro_price = $_POST['price'];
+    require_once('../common/common.php');
+
+    $post = sanitize($_POST);
+    $pro_name = $post['name'];
+    $pro_price = $post['price'];
     $pro_gazou = $_FILES['gazou'];
 
-    $pro_name = htmlspecialchars($pro_name, ENT_QUOTES, 'UTF-8');
-    $pro_price = htmlspecialchars($pro_price, ENT_QUOTES, 'UTF-8');
     // $pro_gazou = htmlspecialchars($pro_gazou, ENT_QUOTES, 'UTF-8');
 
     if ($pro_name == '') {
